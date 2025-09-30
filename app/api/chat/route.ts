@@ -1,28 +1,45 @@
-import { type NextRequest, NextResponse } from "next/server"
-import fetch from "node-fetch"
+import { NextResponse } from "next/server"
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
     const { message } = await req.json()
+
     if (!message) {
       return NextResponse.json({ error: "Message is required" }, { status: 400 })
     }
 
-    // Use Ollama HTTP API for faster responses
     const ollamaUrl = "http://localhost:11434/api/generate"
+
     const ollamaRes = await fetch(ollamaUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "llama3", prompt: message, stream: false })
+      body: JSON.stringify({
+        model: "llama3:latest",
+        prompt: `You are a helpful car recommendation assistant. A user asked: "${message}". Provide a helpful, friendly response about cars and recommend they use the car recommendation feature if relevant. Keep your response concise and helpful.`,
+        stream: false,
+      }),
     })
+
     if (!ollamaRes.ok) {
       const err = await ollamaRes.text()
-      return NextResponse.json({ error: "Failed to get response from Ollama", details: err }, { status: 500 })
+      console.error("Ollama error:", err)
+      return NextResponse.json(
+        {
+          response: "🤖 I'm having trouble connecting to the AI service right now. You can still use the car recommendation feature to find your perfect car!"
+        }
+      )
     }
+
     const data = await ollamaRes.json()
-    return NextResponse.json({ response: data.response?.trim() || "" }, { status: 200 })
+    const reply = data.response ?? ""
+
+    return NextResponse.json({ response: reply.trim() })
   } catch (error: any) {
     console.error("[v0] Error in /api/chat:", error)
-    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 })
+    return NextResponse.json(
+      {
+        response: "🤖 I'm currently unavailable, but you can use the car recommendation feature to find amazing cars that match your preferences!"
+      }
+    )
   }
 }

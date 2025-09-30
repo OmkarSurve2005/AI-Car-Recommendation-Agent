@@ -14,6 +14,9 @@ interface Car {
   mileage: number
   type: string
   reason: string
+  imageUrl?: string
+  brandLogoUrl?: string
+  infoUrl?: string
 }
 
 export default function Home() {
@@ -51,77 +54,67 @@ export default function Home() {
   }
 
   return (
-  <div className="min-h-screen bg-gradient-to-br from-[#e0eafc] via-[#cfdef3] to-[#f9fafc] flex flex-col relative overflow-x-hidden">
-      {/* YouTube-style top navbar */}
-      <header className="w-full flex items-center justify-between px-4 py-3 bg-white/90 shadow-lg sticky top-0 z-30 backdrop-blur-md border-b border-gray-200">
-        <div className="flex items-center gap-3">
-          <Car className="w-9 h-9 text-primary drop-shadow-md" />
-          <span className="text-2xl font-extrabold text-primary tracking-tight font-sans">CarTube</span>
-        </div>
-        <div className="flex-1 flex justify-center max-w-lg">
-          <div className="relative w-full">
-            <input
-              type="text"
-              placeholder="Search cars..."
-              className="w-full rounded-full border border-gray-300 px-4 py-2 pl-10 text-base focus:outline-none focus:ring-2 focus:ring-primary bg-gray-100 shadow-sm transition-all duration-200"
-              disabled
-            />
-            <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+  <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center">
+              <Car className="w-8 h-8 text-blue-600 mr-3" />
+              <span className="text-2xl font-bold text-gray-900">CarTube</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Link href="/chatbot" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center">
+                <MessageCircle className="w-4 h-4 mr-2" />
+                Chat
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <Link href="/chatbot" passHref>
-            <Button variant="secondary" className="flex items-center gap-2 font-semibold shadow-lg hover:bg-primary/90 hover:text-white transition-all duration-200">
-              <MessageCircle className="w-5 h-5" />
-              Chat
-            </Button>
-          </Link>
         </div>
       </header>
 
-      {/* Main content area */}
-  <main className="flex-1 w-full max-w-7xl mx-auto px-2 sm:px-6 py-8 flex flex-col md:flex-row gap-10">
-        {/* Sidebar (optional, can add filters here) */}
-        <aside className="hidden md:block w-72">
-          <div className="bg-white/80 rounded-2xl shadow-xl p-6 mb-4 border border-gray-100">
-            <h2 className="text-xl font-bold mb-3 text-primary">Find Your Car</h2>
-            <CarPreferenceForm onSubmit={handleGetRecommendations} loading={loading} />
+      {/* Main content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Form section */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Find Your Car</h2>
+              <CarPreferenceForm onSubmit={handleGetRecommendations} loading={loading} />
+            </div>
           </div>
-        </aside>
 
-        {/* Main grid area */}
-        <section className="flex-1">
-          <div className="block md:hidden mb-6">
-            <CarPreferenceForm onSubmit={handleGetRecommendations} loading={loading} />
-          </div>
-          {error && (
-            <div className="text-destructive text-center p-4 rounded-xl bg-destructive/20 border border-destructive mb-6 shadow">
-              <p className="font-medium">{"Error: " + error}</p>
-              <p className="text-sm mt-1">
-                Please ensure your Python environment is set up correctly and the script runs without errors.
-              </p>
-            </div>
-          )}
-          {!loading && recommendations.length > 0 ? (
-            <div>
-              <h1 className="text-3xl font-extrabold text-primary mb-6 tracking-tight">Recommended Cars</h1>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <CarRecommendations recommendations={recommendations} />
+          {/* Results section */}
+          <div className="lg:col-span-2">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+                <p className="font-medium">Error: {error}</p>
+                <p className="text-sm mt-1">
+                  Please ensure your Python environment is set up correctly and the script runs without errors.
+                </p>
               </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full opacity-80 mt-20 animate-fade-in-up">
-              <Car className="w-24 h-24 text-primary mb-6 drop-shadow-lg" />
-              <h2 className="text-3xl font-bold mb-2 text-primary">Start your car search</h2>
-              <p className="text-muted-foreground text-center max-w-md text-lg">Enter your preferences to get personalized car recommendations powered by AI.</p>
-            </div>
-          )}
-        </section>
+            )}
+
+            {!loading && recommendations.length > 0 ? (
+              <CarRecommendations recommendations={recommendations} />
+            ) : (
+              <div className="text-center py-12">
+                <Car className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Start your car search</h2>
+                <p className="text-gray-600">Enter your preferences to get personalized car recommendations powered by AI.</p>
+              </div>
+            )}
+          </div>
+        </div>
       </main>
+
       {/* Footer */}
-      <footer className="w-full text-center text-xs sm:text-sm text-muted-foreground py-4 border-t bg-white/80 shadow-inner">
-        <span>🚗 Powered by AI Car Recommendation Agent &mdash; {new Date().getFullYear()}</span>
+      <footer className="bg-white border-t mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center text-gray-600">
+            <p>🚗 Powered by AI Car Recommendation Agent &mdash; {new Date().getFullYear()}</p>
+          </div>
+        </div>
       </footer>
     </div>
   )

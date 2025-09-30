@@ -34,20 +34,33 @@ export async function POST(request: Request) {
       )
     }
 
-    // The Python script prints the recommendations as a string representation of a list of dicts
-    // We need to parse this string to a JSON object.
-    // The script currently prints two example usages, so we need to extract the relevant part.
-    const recommendationsString = data
-      .split("\n")
-      .filter((line) => line.startsWith("["))
-      .pop()
+    // Parse the Python script output - it may contain debug information
+    // Look for the actual recommendations data (should be a list of dictionaries)
+    const lines = data.split("\n").map(line => line.trim()).filter(line => line.length > 0)
+
+    let recommendationsString = null
+
+    // Find the line that contains the recommendations (should look like a Python list)
+    for (const line of lines) {
+      if (line.startsWith("[") && line.includes("{")) {
+        recommendationsString = line
+        break
+      }
+    }
 
     if (!recommendationsString) {
       console.error("[v0] No recommendations string found in Python script output:", data)
       return NextResponse.json({ error: "No recommendations found" }, { status: 500 })
     }
 
-    const recommendations = JSON.parse(recommendationsString.replace(/'/g, '"')) // Replace single quotes with double quotes for valid JSON
+    // Convert Python-style dictionary/list to JSON
+    const jsonString = recommendationsString
+      .replace(/'/g, '"')  // Replace single quotes with double quotes
+      .replace(/True/g, 'true')  // Convert Python booleans
+      .replace(/False/g, 'false')
+      .replace(/None/g, 'null')
+
+    const recommendations = JSON.parse(jsonString)
 
     return NextResponse.json({ recommendations })
   } catch (error) {

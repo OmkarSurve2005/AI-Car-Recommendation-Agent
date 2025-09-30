@@ -7,36 +7,54 @@ import { Sparkles, ArrowLeft } from "lucide-react"
 
 export default function ChatbotPage() {
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-br from-[#e0eafc] via-[#cfdef3] to-[#f9fafc] text-gray-900 overflow-hidden">
-      {/* Animated gradient blobs */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-80 h-80 bg-gradient-to-br from-primary via-accent to-secondary rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob animate-glow-pulse"></div>
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-gradient-to-tr from-accent via-primary to-secondary rounded-full mix-blend-multiply filter blur-3xl opacity-25 animate-blob animation-delay-2000 animate-glow-pulse"></div>
-        <div className="absolute bottom-0 left-1/2 w-72 h-72 bg-gradient-to-tl from-secondary via-primary to-accent rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-4000 animate-glow-pulse"></div>
-      </div>
-      {/* Chat container with modern card look */}
-  <div className="relative z-10 flex flex-col items-center gap-8 p-8 md:p-12 rounded-2xl shadow-xl bg-white border border-gray-200 w-full max-w-6xl min-h-[70vh] animate-fade-in">
-        {/* Back button */}
-        <div className="absolute top-4 left-4 z-20">
-          <Link href="/" passHref>
-            <Button variant="outline" className="flex items-center gap-2 text-primary hover:bg-primary/10 bg-white border-gray-200 shadow-md">
-              <ArrowLeft className="w-5 h-5" />
-              <span>Back</span>
-            </Button>
-          </Link>
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <Link href="/" className="flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              Back to Home
+            </Link>
+            <h1 className="text-2xl font-bold text-gray-900">AI Car Assistant</h1>
+            <div className="w-20"></div>
+          </div>
         </div>
-        {/* Animated header */}
-        <h1 className="flex items-center gap-3 text-4xl md:text-5xl font-extrabold text-primary drop-shadow-lg mb-4 text-balance text-center animate-slide-down">
-          <Sparkles className="w-10 h-10 text-accent animate-spin-slow" />
-          Chat with AI
-        </h1>
-  <div className="w-full flex-1 flex flex-col justify-center max-w-5xl mx-auto">
-          <Chatbot />
+      </header>
+
+      {/* Chat container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-5xl mx-auto">
+          {/* Chat Header */}
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">🤖 AI Car Assistant</h2>
+            <p className="text-gray-600">Get instant help with car recommendations and advice</p>
+          </div>
+
+          {/* Chat Interface */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+            <Chatbot />
+          </div>
+
+          {/* Feature Info */}
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center p-4 bg-white rounded-lg shadow">
+              <div className="text-2xl mb-2">🚗</div>
+              <h3 className="font-semibold text-gray-900 mb-1">Car Recommendations</h3>
+              <p className="text-sm text-gray-600">Get personalized car suggestions</p>
+            </div>
+            <div className="text-center p-4 bg-white rounded-lg shadow">
+              <div className="text-2xl mb-2">💬</div>
+              <h3 className="font-semibold text-gray-900 mb-1">Expert Advice</h3>
+              <p className="text-sm text-gray-600">Ask questions about any car</p>
+            </div>
+            <div className="text-center p-4 bg-white rounded-lg shadow">
+              <div className="text-2xl mb-2">⚡</div>
+              <h3 className="font-semibold text-gray-900 mb-1">Instant Response</h3>
+              <p className="text-sm text-gray-600">Get answers in real-time</p>
+            </div>
+          </div>
         </div>
-        {/* Creative footer */}
-        <footer className="w-full text-center text-xs sm:text-sm text-muted-foreground mt-4 opacity-80 animate-fade-in-up">
-          <span>🚗 Powered by AI Car Recommendation Agent &mdash; {new Date().getFullYear()}</span>
-        </footer>
       </div>
     </main>
   )

@@ -52,9 +52,19 @@ export function Chatbot() {
       setMessages((prevMessages) => [...prevMessages, { role: "assistant", content: data.response }])
     } catch (error: any) {
       console.error("[v0] Error sending message:", error)
+
+      let errorMessage = "Could not get a response from AI."
+
+      // Handle specific error cases
+      if (error.message?.includes("AI Chat requires more memory")) {
+        errorMessage = "🤖 AI Chat needs more memory to run. You can still use the car recommendation feature!"
+      } else if (error.message?.includes("AI Chat is currently unavailable")) {
+        errorMessage = "🤖 AI Chat is temporarily unavailable. Try the car recommendation feature instead!"
+      }
+
       setMessages((prevMessages) => [
         ...prevMessages,
-        { role: "assistant", content: `Error: ${error.message || "Could not get a response."}` },
+        { role: "assistant", content: errorMessage },
       ])
     } finally {
       setLoading(false)
@@ -62,60 +72,106 @@ export function Chatbot() {
   }
 
   return (
-  <div className="w-full max-w-7xl h-[600px] flex flex-col bg-white border border-gray-200 shadow-2xl rounded-2xl mx-auto">
-      <div className="p-4 border-b border-gray-200">
-        <h2 className="text-xl font-bold text-primary">Car AI Chatbot</h2>
-      </div>
-      <div className="flex-1 px-8 py-4 overflow-hidden flex flex-col justify-end">
-        <div className="h-full pr-2 overflow-y-auto flex flex-col justify-end">
-          <div className="flex flex-col gap-4 w-full max-w-4xl mx-auto">
-            {messages.length === 0 && (
-              <div className="text-center text-muted-foreground text-sm">Ask me anything about the suggested cars!</div>
-            )}
-            {messages.map((msg, index) => (
-              <div key={index} className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}> 
-                <div
-                  className={cn(
-                    "max-w-[90%] md:max-w-[70%] p-3 rounded-xl text-base",
-                    msg.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
-                  )}
-                >
-                  {msg.content}
-                </div>
-              </div>
-            ))}
-            {loading && (
-              <div className="flex justify-start">
-                <div className="max-w-[90%] md:max-w-[70%] p-3 rounded-xl bg-muted text-muted-foreground animate-pulse text-base">
-                  Thinking...
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
+    <div className="w-full h-[600px] flex flex-col bg-gray-50 border rounded-2xl overflow-hidden">
+      {/* Chat Header */}
+      <div className="bg-white border-b p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+              <span className="text-white text-sm font-bold">🤖</span>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900">AI Car Assistant</h3>
+              <p className="text-xs text-gray-500">Online</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-xs text-gray-500">Active</span>
           </div>
         </div>
       </div>
-      <div className="p-4 border-t border-gray-200 flex gap-2 justify-center w-full">
-        <div className="flex w-full max-w-4xl mx-auto gap-2">
-          <input
-            placeholder="Type your message..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === "Enter" && !loading) {
-                handleSendMessage()
-              }
-            }}
-            className="flex-1 bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus-visible:ring-primary outline-none text-base"
-            disabled={loading}
-          />
-          <button
-            onClick={handleSendMessage}
-            disabled={loading}
-            className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-lg shadow text-base"
-          >
-            Send
-          </button>
+
+      {/* Messages area */}
+      <div className="flex-1 p-6 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
+        <div className="space-y-6 max-w-4xl mx-auto">
+          {messages.length === 0 && (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">🤖</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Welcome to AI Car Assistant!</h3>
+              <p className="text-gray-600 mb-4">Ask me anything about cars and I'll help you find the perfect match for your needs.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-500">
+                <div className="bg-white p-3 rounded-lg">💡 "I need a family car under ₹15,00,000"</div>
+                <div className="bg-white p-3 rounded-lg">💡 "What's the best sports car for ₹25,00,000?"</div>
+              </div>
+            </div>
+          )}
+          {messages.map((msg, index) => (
+            <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div
+                className={`max-w-[85%] md:max-w-[70%] p-4 rounded-2xl shadow-sm ${
+                  msg.role === "user"
+                    ? "bg-blue-600 text-white"
+                    : "bg-white text-gray-800 border border-gray-200"
+                }`}
+              >
+                <p className="text-sm leading-relaxed">{msg.content}</p>
+              </div>
+            </div>
+          ))}
+          {loading && (
+            <div className="flex justify-start">
+              <div className="bg-white text-gray-800 border border-gray-200 p-4 rounded-2xl shadow-sm">
+                <div className="flex items-center space-x-2">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  </div>
+                  <span className="text-sm text-gray-600">AI is thinking...</span>
+                </div>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      {/* Input area */}
+      <div className="p-6 bg-white border-t">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex gap-3 items-end">
+            <div className="flex-1 relative">
+              <input
+                placeholder="Ask me about cars, budget, features, or recommendations..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && !loading) {
+                    handleSendMessage()
+                  }
+                }}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
+                disabled={loading}
+              />
+            </div>
+            <button
+              onClick={handleSendMessage}
+              disabled={loading || input.trim() === ""}
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[80px]"
+            >
+              {loading ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <span className="text-sm font-medium">Send</span>
+              )}
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 mt-2 text-center">
+            Press Enter to send • Get instant car recommendations and advice
+          </p>
         </div>
       </div>
     </div>

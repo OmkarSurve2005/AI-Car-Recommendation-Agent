@@ -9,7 +9,7 @@ interface CarPreferenceFormProps {
 }
 
 export function CarPreferenceForm({ onSubmit, loading }: CarPreferenceFormProps) {
-  const [budget, setBudget] = useState<number>(30000)
+  const [budget, setBudget] = useState<number>(1000000)
   const [mileage, setMileage] = useState<number>(15)
   const [usage, setUsage] = useState<string>("family")
 
@@ -19,76 +19,73 @@ export function CarPreferenceForm({ onSubmit, loading }: CarPreferenceFormProps)
   }
 
   return (
-    <div className="flex justify-center items-start w-full">
-      {/* Wider centered card */}
-      <div className="w-full max-w-7xl bg-white text-gray-900 border border-gray-200 shadow-2xl rounded-2xl p-12">
-        <div className="mb-10 text-center">
-          <h2 className="text-5xl font-extrabold text-primary mb-4">Find Your Dream Car</h2>
-          <p className="text-muted-foreground text-2xl">
-            Enter your preferences and let our AI agent find the perfect match for you.
-          </p>
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Find Your Dream Car</h2>
+        <p className="text-gray-600">
+          Enter your preferences and let our AI agent find the perfect match for you.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Budget + Mileage side by side */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="budget" className="block text-sm font-medium text-gray-700 mb-2">
+              Budget (₹)
+            </label>
+            <input
+              id="budget"
+              type="number"
+              placeholder="500000"
+              value={budget}
+              onChange={e => setBudget(Number(e.target.value))}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label htmlFor="mileage" className="block text-sm font-medium text-gray-700 mb-2">
+              Min. Mileage (kmpl)
+            </label>
+            <input
+              id="mileage"
+              type="number"
+              placeholder="15"
+              value={mileage}
+              onChange={e => setMileage(Number(e.target.value))}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="grid gap-10">
-          {/* Budget + Mileage side by side, responsive */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
-            <div className="flex flex-col gap-3 md:w-[90%] lg:w-full">
-              <label htmlFor="budget" className="text-gray-800 text-xl font-semibold">
-                Budget (USD)
-              </label>
-              <input
-                id="budget"
-                type="number"
-                placeholder="e.g., 30000"
-                value={budget}
-                onChange={e => setBudget(Number(e.target.value))}
-                required
-                className="w-full bg-gray-100 text-gray-900 border border-gray-300 rounded-xl px-8 py-6 text-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
-              />
-            </div>
-            <div className="flex flex-col gap-3 md:w-[90%] lg:w-full">
-              <label htmlFor="mileage" className="text-gray-800 text-xl font-semibold">
-                Min. Mileage (kmpl)
-              </label>
-              <input
-                id="mileage"
-                type="number"
-                placeholder="e.g., 15"
-                value={mileage}
-                onChange={e => setMileage(Number(e.target.value))}
-                required
-                className="w-full bg-gray-100 text-gray-900 border border-gray-300 rounded-xl px-8 py-6 text-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
-              />
-            </div>
-          </div>
-
-          {/* Usage full width */}
-          <div className="flex flex-col gap-3 md:w-[95%] lg:w-full">
-            <label htmlFor="usage" className="text-gray-800 text-xl font-semibold">
-              Usage
-            </label>
-            <select
-              id="usage"
-              value={usage}
-              onChange={e => setUsage(e.target.value)}
-              className="w-full bg-gray-100 text-gray-900 border border-gray-300 rounded-xl px-8 py-6 text-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
-              required
-            >
-              <option value="family">Family</option>
-              <option value="sports">Sports</option>
-            </select>
-          </div>
-
-          {/* Submit button */}
-          <button
-            type="submit"
-            className="w-full bg-primary text-white hover:bg-primary/90 transition-colors duration-200 py-5 text-2xl font-extrabold rounded-xl shadow-xl"
-            disabled={loading}
+        {/* Usage */}
+        <div>
+          <label htmlFor="usage" className="block text-sm font-medium text-gray-700 mb-2">
+            Usage
+          </label>
+          <select
+            id="usage"
+            value={usage}
+            onChange={e => setUsage(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
           >
-            {loading ? "Searching..." : "Get Recommendations"}
-          </button>
-        </form>
-      </div>
+            <option value="family">Family</option>
+            <option value="sports">Sports</option>
+          </select>
+        </div>
+
+        {/* Submit button */}
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          disabled={loading}
+        >
+          {loading ? "Searching..." : "Get Recommendations"}
+        </button>
+      </form>
     </div>
   )
 }

@@ -1,13 +1,9 @@
 import type React from "react"
 import "./globals.css"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
-import { ThemeProvider } from "@/components/theme-provider" // Import ThemeProvider
 
 export const metadata = {
-  title: "AI Car Recommendation Agent",
-  description: "Get personalized car recommendations based on your preferences.",
-    generator: 'v0.app'
+  title: "CarTube - AI Car Recommendation Agent",
+  description: "Get personalized car recommendations based on your preferences with AI-powered technology.",
 }
 
 export default function RootLayout({
@@ -16,11 +12,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}>
-      <body>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
+    <html lang="en">
+      <body className="min-h-screen bg-gradient-to-br from-[#e0eafc] via-[#cfdef3] to-[#f9fafc] font-sans antialiased">
+        {children}
       </body>
     </html>
   )
