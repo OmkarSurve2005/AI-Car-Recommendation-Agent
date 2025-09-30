@@ -12,27 +12,6 @@
 
 ---
 
-## 📸 Screenshots
-
-### Homepage - Car Recommendation Form
-<!-- Add your homepage screenshot here -->
-<img width="1920" height="1020" alt="Screenshot (1841)" src="https://github.com/user-attachments/assets/ff65f219-ffe5-461e-941f-1e6199f745c2" />
-
-### Recommendation Results
-<!-- Add your results page screenshot here -->
-![fotor-20250930213217](https://github.com/user-attachments/assets/f223e960-d30c-4452-badb-68a513f8e132)
-
-### Compare Cars Feature 
-![Screenshot (1840)-fotor-20250930213727](https://github.com/user-attachments/assets/d62ca9e5-0683-441c-9733-e20025a1dd4b)
-
-
-### AI Chatbot Interface
-<!-- Add your chatbot screenshot here -->
-<img width="1920" height="1020" alt="Screenshot (1837)" src="https://github.com/user-attachments/assets/fb1c6fcc-4138-48c4-915f-356fa3e0c787" />
-
-
----
-
 ## 📋 Table of Contents
 
 - [Overview](#overview)
@@ -545,6 +524,25 @@ AI-Car-Recommendation-Agent/
 
 ---
 
+## 📸 Screenshots
+
+### Homepage - Car Recommendation Form
+<!-- Add your homepage screenshot here -->
+<img width="1920" height="1020" alt="Screenshot (1841)" src="https://github.com/user-attachments/assets/ff65f219-ffe5-461e-941f-1e6199f745c2" />
+
+### Recommendation Results
+<!-- Add your results page screenshot here -->
+![fotor-20250930213217](https://github.com/user-attachments/assets/f223e960-d30c-4452-badb-68a513f8e132)
+
+### Compare Cars Feature 
+![Screenshot (1840)-fotor-20250930213727](https://github.com/user-attachments/assets/d62ca9e5-0683-441c-9733-e20025a1dd4b)
+
+### AI Chatbot Interface
+<!-- Add your chatbot screenshot here -->
+<img width="1920" height="1020" alt="Screenshot (1837)" src="https://github.com/user-attachments/assets/fb1c6fcc-4138-48c4-915f-356fa3e0c787" />
+
+---
+
 ## 🗺️ Roadmap
 
 ### Version 2.0 (Q4 2025)
@@ -693,5 +691,6 @@ If you find this project helpful:
 
 **Built with ❤️ by Omkar Surve**
 
+Made possible by open-source technologies
 
 </div>
