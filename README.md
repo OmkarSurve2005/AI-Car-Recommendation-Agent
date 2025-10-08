@@ -669,8 +669,8 @@ Fixes #issue_number
 
 ### Project Links
 
-- **Repository**: https://github.com/yourusername/AI-Car-Recommendation-Agent
-- **Bug Reports**: https://github.com/yourusername/AI-Car-Recommendation-Agent/issues
+- **Repository**: https://github.com/OmkarSurve2005/AI-Car-Recommendation-Agent
+- **Bug Reports**: https://github.com/OmkarSurve2005/AI-Car-Recommendation-Agent/issues
 
 ---
 
